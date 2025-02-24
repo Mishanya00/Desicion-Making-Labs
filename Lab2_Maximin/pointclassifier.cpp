@@ -3,17 +3,17 @@
 #include "random.h"
 #include <unordered_set>
 #include <unordered_map>
+#include <algorithm>
 
 
-PointClassifier::PointClassifier(Rect area) {
-    area_ = area;
-    GeneratePoints(2000);
-    GenerateKernels(1);
-}
+PointClassifier::PointClassifier(Rect area) : area_(area) {}
 
 void PointClassifier::AddNewMaxKernel()
 {
-    std::vector<float> farthest_points(kernels_.size(), 0); // replace with std::pair
+    std::vector<std::pair<float, int>>
+        farthest_points(kernels_.size(), {0, {}}); // replace with std::pair
+    std::pair<float, int> candidate;
+
     float avg_distance = 0;
     int distances_cnt = 0;
     float distance;
@@ -28,14 +28,30 @@ void PointClassifier::AddNewMaxKernel()
 
     for (int i = 0; i < kernels_.size(); ++i)
     {
-        for (auto &p : points_)
+        for (int j = 0; j < points_.size(); ++j)
         {
-            distance = std::sqrt(std::pow(kernels_[i].x - p.x, 2)
-                      + std::pow(kernels_[i].y - p.y, 2));
-            if (distance > farthest_points[i]) {
-                farthest_points[i] = distance;
+            if (points_[j].cluster == i+1) {
+                distance = std::sqrt(std::pow(kernels_[i].x - points_[j].x, 2)
+                                     + std::pow(kernels_[i].y - points_[j].y, 2));
+
+                if (distance > farthest_points[i].first)
+                {
+                    farthest_points[i].first = distance;
+                    farthest_points[i].second = j;
+                }
             }
         }
+    }
+
+    candidate = *std::max_element(farthest_points.begin(), farthest_points.end(),
+                     [](const std::pair<float, int> a, const std::pair<float, int> b) {
+        return a.first < b.first;
+    });
+
+    if (candidate.first > avg_distance / 2) {
+        points_[candidate.second].isKernel = true;
+        points_[candidate.second].cluster = kernels_.size() + 1;
+        kernels_.push_back(points_[candidate.second]);
     }
 }
 

@@ -26,10 +26,6 @@ SimpleWindow::SimpleWindow(QWidget *parent)
     outer->addLayout(inner);
     outer->setStretch(1, 1);
 
-    auto btnCalculate = new QPushButton("Calculate", this);
-    connect(btnCalculate, &QPushButton::clicked, cnvMain, &Canvas::CalculateButtonPressed);
-    inner->addWidget(btnCalculate);
-
     auto btnIterate = new QPushButton("Iterate", this);
     connect(btnIterate, &QPushButton::clicked, cnvMain, &Canvas::IterateButtonPressed);
     inner->addWidget(btnIterate);

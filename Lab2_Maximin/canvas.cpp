@@ -23,6 +23,9 @@ Canvas::Canvas(QWidget *parent)
     color_map_[8] = Qt::black;
 
     pcMain = std::make_unique<PointClassifier>(points_area);
+    pcMain->GeneratePoints(2000);
+    pcMain->GenerateKernels(1);
+    pcMain->RecalculateClusters();
 }
 
 void Canvas::paintEvent(QPaintEvent *event) {
@@ -40,13 +43,12 @@ void Canvas::paintEvent(QPaintEvent *event) {
     }
 }
 
-void Canvas::CalculateButtonPressed() {
-    pcMain->RecalculateClusters();
-    this->repaint();
-}
-
 void Canvas::IterateButtonPressed() {
+    /*
     pcMain->RecalculateNewKernels();
+    pcMain->RecalculateClusters();
+    */
+    pcMain->AddNewMaxKernel();
     pcMain->RecalculateClusters();
     this->repaint();
 }
