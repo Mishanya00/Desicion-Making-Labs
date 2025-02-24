@@ -12,8 +12,11 @@ class Canvas : public QWidget
     Q_OBJECT
 public:
     explicit Canvas(QWidget *parent = nullptr);
-    void IterateButtonPressed();
-    void IterateAllButtonPressed();
+    void IterateMaximin();
+    void IterateKAverage();
+
+    void IterateAllMaximin();
+    void IterateAllKAverage();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

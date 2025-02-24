@@ -26,6 +26,9 @@ void PointClassifier::AddNewMaxKernel()
         }
     }
 
+    if (distances_cnt != 0)
+        avg_distance /= distances_cnt;
+
     for (int i = 0; i < kernels_.size(); ++i)
     {
         for (int j = 0; j < points_.size(); ++j)

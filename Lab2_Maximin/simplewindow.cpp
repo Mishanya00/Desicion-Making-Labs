@@ -26,13 +26,21 @@ SimpleWindow::SimpleWindow(QWidget *parent)
     outer->addLayout(inner);
     outer->setStretch(1, 1);
 
-    auto btnIterate = new QPushButton("Iterate", this);
-    connect(btnIterate, &QPushButton::clicked, cnvMain, &Canvas::IterateButtonPressed);
-    inner->addWidget(btnIterate);
+    auto btnMaximinIterate = new QPushButton("Iterate Maximin", this);
+    connect(btnMaximinIterate, &QPushButton::clicked, cnvMain, &Canvas::IterateMaximin);
+    inner->addWidget(btnMaximinIterate);
 
-    auto btnIterateAll = new QPushButton("Iterate All", this);
-    connect(btnIterateAll, &QPushButton::clicked, cnvMain, &Canvas::IterateAllButtonPressed);
-    inner->addWidget(btnIterateAll);
+    auto btnMaximinIterateAll = new QPushButton("Iterate All Maximin", this);
+    connect(btnMaximinIterateAll, &QPushButton::clicked, cnvMain, &Canvas::IterateAllMaximin);
+    inner->addWidget(btnMaximinIterateAll);
+
+    auto btnKAverageIterate = new QPushButton("Finish K-average", this);
+    connect(btnKAverageIterate, &QPushButton::clicked, cnvMain, &Canvas::IterateKAverage);
+    inner->addWidget(btnKAverageIterate);
+
+    auto btnKAverageIterateAll = new QPushButton("Finish K-average", this);
+    connect(btnKAverageIterateAll, &QPushButton::clicked, cnvMain, &Canvas::IterateAllKAverage);
+    inner->addWidget(btnKAverageIterateAll);
 
     inner->setStretch(0, 1);
     inner->setStretch(1, 9);

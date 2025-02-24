@@ -28,6 +28,38 @@ Canvas::Canvas(QWidget *parent)
     pcMain->RecalculateClusters();
 }
 
+void Canvas::IterateMaximin()
+{
+    pcMain->AddNewMaxKernel();
+    pcMain->RecalculateClusters();
+    this->repaint();
+}
+
+void Canvas::IterateKAverage()
+{
+    pcMain->RecalculateNewKernels();
+    pcMain->RecalculateClusters();
+    this->repaint();
+}
+
+void Canvas::IterateAllMaximin()
+{
+    size_t prev_size;
+    do {
+        prev_size = pcMain->kernels_.size();
+        pcMain->AddNewMaxKernel();
+        pcMain->RecalculateClusters();
+    } while(prev_size != pcMain->kernels_.size());
+
+    this->repaint();
+}
+
+void Canvas::IterateAllKAverage()
+{
+    pcMain->CalculateFinalKernels();
+    this->repaint();
+}
+
 void Canvas::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
 
@@ -41,20 +73,4 @@ void Canvas::paintEvent(QPaintEvent *event) {
         painter.setBrush(color_map_[point.cluster]);
         painter.drawRect(point.x, point.y, 10, 10);
     }
-}
-
-void Canvas::IterateButtonPressed() {
-    /*
-    pcMain->RecalculateNewKernels();
-    pcMain->RecalculateClusters();
-    */
-    pcMain->AddNewMaxKernel();
-    pcMain->RecalculateClusters();
-    this->repaint();
-}
-
-void Canvas::IterateAllButtonPressed() {
-    pcMain->CalculateFinalKernels();
-    //pcMain->RecalculateClusters(); // Its already done inside CalculateFinalKernels
-    this->repaint();
 }
